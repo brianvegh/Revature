@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="InspectionProjectProfileManager">
+    <profile version="1.0">
+      <option name="myName" value="Project Default" />
+    </profile>
+    <version value="1.0" />
+  </component>
+  <component name="ProjectCodeStyleConfiguration">
+    <option name="PREFERRED_PROJECT_CODE_STYLE" value="Default" />
+    <code_scheme name="Project" version="173">
+      <codeStyleSettings language="JAVA">
+        <option name="KEEP_BLANK_LINES_IN_DECLARATIONS" value="0" />
+        <option name="KEEP_BLANK_LINES_IN_CODE" value="0" />
+        <option name="KEEP_BLANK_LINES_BETWEEN_PACKAGE_DECLARATION_AND_HEADER" value="0" />
+        <option name="KEEP_BLANK_LINES_BEFORE_RBRACE" value="0" />
+        <option name="SPACE_BEFORE_TYPE_PARAMETER_LIST" value="true" />
+      </codeStyleSettings>
+    </code_scheme>
+  </component>
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/HackerRank.iml" filepath="$PROJECT_DIR$/.idea/modules/HackerRank.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/HackerRank-build.iml" filepath="$PROJECT_DIR$/.idea/modules/HackerRank-build.iml" />
+    </modules>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+  <component name="ScalaCompilerConfiguration">
+    <profile name="sbt 1" modules="hackerrank" />
+  </component>
+  <component name="ScalaSbtSettings">
+    <option name="customVMPath" />
+    <option name="linkedExternalProjectsSettings">
+      <SbtProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/project" />
+          </set>
+        </option>
+        <option name="resolveSbtClassifiers" value="true" />
+        <option name="sbtVersion" value="1.4.3" />
+      </SbtProjectSettings>
+    </option>
+  </component>
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
+  </component>
+</project>
