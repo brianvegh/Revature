@@ -1,6 +1,5 @@
 use racing;
 
-
 Select d.Name, SUM(CASE
 		When  r.Finished=1 THEN 1 
 		Else 0
