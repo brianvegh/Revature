@@ -49,7 +49,7 @@ object InputValid {
    * @param prompt prompt displayed to user
    * @return returns string from user
    */
-  def getString(prompt: String): String = getString(prompt, null, false)
+  def getString(prompt: String): String = getString(prompt, null, alphaOnly = false)
 
   /**
    * returns string that doesn't contain illegal characters
@@ -58,7 +58,7 @@ object InputValid {
    * @param illegalCharacters characters not allowed in string
    * @return returns string from user
    */
-  def getString(prompt: String, illegalCharacters: String): String = getString(prompt, illegalCharacters, false)
+  def getString(prompt: String, illegalCharacters: String): String = getString(prompt, illegalCharacters, alphaOnly = false)
 
   /**
    * returns string that is alpha only, and doesn't contain illegal characters
@@ -75,7 +75,7 @@ object InputValid {
    * @param prompt prompt displayed to user
    * @return returns string from user
    */
-  def getStringAlphaOnly(prompt: String): String = getString(prompt, NULL_STRING, true)
+  def getStringAlphaOnly(prompt: String): String = getString(prompt, NULL_STRING, alphaOnly = true)
 
   //private driver code for getInt()//private driver code for getInt()
 

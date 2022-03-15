@@ -21,6 +21,8 @@ protected object CONSTANTS {
       "[4]. View Top Three Positions for each Race\n"+
       "[5]. View Percentage Driver Finish Position stats within user-inputted range\n"+
       "[6]. View Drivers Race Finishes/DidNotFinish\n"+
+      "[7]. View All Race Finishes for All Drivers\n"+
+      "[8]. View All Race Finishes for Drivers matching Name Search\n"+
       "[0]. RETURN TO PREVIOUS MENU\n"+
       "Enter your selection:"
       //list of queries I have made here
