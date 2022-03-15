@@ -1,18 +1,28 @@
 package com.Project0
 
 import java.sql.{Connection, DriverManager, ResultSet, SQLException, Statement}
+import scala.collection.mutable.ListBuffer
+import scala.collection.immutable.StringOps
 
 class SQLbridge(val driver:String, val url:String, val username:String, val password:String) {
+
+
   private var connection:Connection = null
   private var statement:Statement = null
   private var r:ResultSet =null
 
-  def queryPrintAsCsv(q:String):Unit={
-    queryPrintAsCsv(query(q))
-  }
 
   def queryToCsv(rs:ResultSet, filepath:String):Unit= {
 
+  }
+
+  def execute(str: String) = statement.executeUpdate(str)
+
+  def batchExecuteQuery(strings: Array[String]): ResultSet = {
+    for (s <- 0 until (strings.length - 2)) {
+      query(strings(s))
+    }
+    query(strings(strings.length - 1))
   }
 
   def query(query:String): ResultSet= {
@@ -27,17 +37,63 @@ class SQLbridge(val driver:String, val url:String, val username:String, val pass
     }
   }
 
+  def queryPrintAsCsv(q:String):Unit={
+    queryPrintAsCsv(query(q))
+  }
   def queryPrintAsCsv(rs: ResultSet): Unit={
     var rsMetaData= rs.getMetaData()
-    for(i<-1 until rsMetaData.getColumnCount) {
-      print(rsMetaData.getColumnName(i))
-      if ((i+1)!=rsMetaData.getColumnCount) print(", ")
+    val columnCount=rsMetaData.getColumnCount
+    for(i<- 1 until columnCount) {
+      print(rsMetaData.getColumnLabel(i))
+      if ((i)!=columnCount) print(", ")
     }
+    print(rsMetaData.getColumnName(columnCount))
     println()
     while ( rs.next() ) {
-      println(rs.getString(1)+", " +rs.getString(2) +", " +rs.getString(3))
+      for(i<- 1 until columnCount) {
+        print(rs.getString(i))
+        if ((i)!=columnCount) print(", ")
+      }
+      print(rs.getString(columnCount))
+      print("\n")
     }
+    System.out.flush();readLine();System.out.flush()
   }
+
+  def queryPrintFormatted(q:String):Unit={
+    queryPrintFormatted(query(q))
+  }
+  def queryPrintFormatted(rs: ResultSet): Unit={
+    var rsMetaData= rs.getMetaData()
+    val columnCount:Int=rsMetaData.getColumnCount
+    val tokens:ListBuffer[ListBuffer[String]]=new ListBuffer[ListBuffer[String]]
+    val columnWidth:ListBuffer[Int] = new ListBuffer[Int]
+    for(i<- 1 until columnCount+1) {
+      columnWidth.append(rsMetaData.getColumnLabel(i).length)
+      tokens.append(new ListBuffer[String])
+      tokens(i-1).append(rsMetaData.getColumnLabel(i))
+    }
+    while (rs.next() ) {
+      for(i<- 1 until columnCount+1) {
+       if (rs.getString(i).length>columnWidth(i-1)) {
+        columnWidth(i-1)=rs.getString(i).length
+        }
+        tokens(i-1).append(rs.getString(i))
+      }
+    }
+    for (i<-tokens(0).indices){
+      for (j<-(tokens).indices){
+        val string:String=tokens(j)(i)
+        val width:Int=columnWidth(j)+3
+        val stringFormatted:String=string.padTo(width," ").mkString
+        print(stringFormatted)
+      }
+      print("\n")
+    }
+
+
+    System.out.flush();readLine();System.out.flush()
+}
 
   def connect(): Unit = {
     try {

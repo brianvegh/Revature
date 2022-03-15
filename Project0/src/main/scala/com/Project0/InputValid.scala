@@ -1,3 +1,4 @@
+package com.Project0
 //  Brian Vegh
 //  Revature BigData/Scala
 //  March 9th, 2022
@@ -8,11 +9,7 @@ import java.math.BigDecimal
 import java.util.Scanner
 import scala.util.control.Breaks.{break, breakable}
 
-/**
- * Utility class file with methods that insure valid user input. Contains overloaded methods with different arguments
- * defining the return values maximum length, minimum and maximum values, valid and invalid characters and more
- */
-class InputValid {
+object InputValid {
   private val INT_MIN = -2147483647 //default int value of lowest possible int value + 1
   private val INT_SENTINEL = INT_MIN //...for use as sentinel in comparisons
   private val NULL_STRING = null

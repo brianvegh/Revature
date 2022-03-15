@@ -1,21 +1,11 @@
-Create database racing;
 use racing;
-show databases;
 
-SELECT Cars.CarNumber, Cars.CarYear, Drivers.DriverName
-FROM Cars
-Inner Join Drivers ON Drivers.DriverCarNumber = Cars.CarNumber;
-
-SELECT Cars.CarMake, Cars.CarModel, Cars.CarYear, Drivers.DriverName
-FROM Drivers
-Left Join Cars On Drivers.DriverCarNumber = Cars.CarNumber
-and Cars.CarCountry='America';
-
-SELECT rs.RaceNumber as "Race Number" ,d.DriverName as "Winner", rs.TrackName as "Track Name"
-From Drivers as d
-join RaceResults as rr on d.DriverID=rr.DriverID
-join RaceSeason as rs on rr.RaceNumber=rs.RaceNumber
-Where rr.DriverPosition=1;
+SELECT r.RaceNumber as "Race Number" ,d.Name as "Winner", t.Name as "Track Name"
+From Driver as d
+join Result as r on d.ID=r.DriverID
+join Schedule as s on r.RaceNumber=s.RaceNumber
+join Track as t on s.TrackID=t.ID
+Where r.Position=1;
 
 
 

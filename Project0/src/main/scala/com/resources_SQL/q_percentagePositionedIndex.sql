@@ -1,11 +1,9 @@
 use racing;
-
 set @positionRange_high = 5;
 set @positionRange_low =  9;
-set @driverName = '*';
-   
+set @driverName = '*';   
  Select z.name as 'Driver Name', z.sum_Val as '# of races ending in position range ',  
-		concat(round((z.sum_Val/Count(s.RaceNumber) * 100 ),2),'%') as '% or races ending in position range' 
+		concat(round((z.sum_Val/Count(s.RaceNumber) * 100 ),2),'%') as '% of races ending in position range' 
 	from(Select dd.name, Sum(Case
 		 When (rr.Position>=@positionRange_high and rr.position<=@positionRange_low)
 		 then 1 else 0
