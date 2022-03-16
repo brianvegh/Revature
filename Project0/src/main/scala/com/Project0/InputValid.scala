@@ -16,7 +16,7 @@ object InputValid {
 
   //private driver code getString()//private driver code getString()
 
-  private def getString(prompt: String, illegalCharacters: String, alphaOnly: Boolean) = {
+  private def getString(prompt: String, illegalCharacters: String, alphaOnly: Boolean, blankOK:Boolean=false) = {
     val key = new Scanner(System.in)
     var invalid = false
     var result = ""
@@ -25,7 +25,9 @@ object InputValid {
       result = key.nextLine
       invalid = false
       try {
-        if (result.length == 0) throw new Exception("Input is blank.")
+        if (!blankOK) {
+          if (result.isEmpty) throw new Exception("Input is blank.")
+        }
         if (illegalCharacters != null && illegalCharacters.length > 0) for (c <- result.toCharArray) {
           if (illegalCharacters.contains(String.valueOf(c))) throw new Exception("Input contains invalid characters")
         }
@@ -42,6 +44,14 @@ object InputValid {
     })
     result
   }
+  /**
+   * returns string from user with option to allow blank input
+   *
+   * @param prompt prompt displayed to user
+   * @param blankIsOK boolean true allows empty results
+   * @return returns string from user
+   */
+  def getString(prompt: String, blankIsOK:Boolean): String = getString(prompt, null, alphaOnly = false, blankOK=true )
 
   /**
    * returns string from user

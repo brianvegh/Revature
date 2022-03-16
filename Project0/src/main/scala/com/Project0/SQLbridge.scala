@@ -16,7 +16,14 @@ class SQLbridge(val driver:String, val url:String, val username:String, val pass
 
   }
 
-  def execute(str: String) = statement.executeUpdate(str)
+  def execute(str: String): Int = statement.executeUpdate(str)
+
+  //noinspection DuplicatedCode
+  def batchExecute(strings: Array[String]): Unit ={
+    for (s <- 1 until (strings.length - 1)) {
+      statement.executeUpdate(strings(s))
+    }
+  }
 
   def batchExecuteQuery(strings: Array[String]): ResultSet = {
     for (s <- 0 until (strings.length - 2)) {
@@ -56,7 +63,7 @@ class SQLbridge(val driver:String, val url:String, val username:String, val pass
       }
       print(rs.getString(columnCount))
       print("\n")
-    }
+  }
     System.out.flush();readLine();System.out.flush()
   }
 
