@@ -11,33 +11,34 @@ object RaceSeasonTracker {
   val url = s"jdbc:mysql://$dbHost/$dbName"
   val username = "root"
   val password = "Generic1!"
-  val db = new SQLbridge(driver, url, username, password)
+  val dbBridge = new SQLbridge(driver, url, username, password, dbName)
+
 
   def queries_menu(): Unit = {
     var continue:Boolean=true
     while (continue){
       var choice_main=getInt(CONSTANTS.QUERIES_CASE_STRING,0,8)
       choice_main match {
-        case 1=> db.queryPrintFormatted(roster_Q)
-        case 2=>db.queryPrintFormatted(raceWinners_Q)
+        case 1=> dbBridge.queryPrintFormatted(roster_Q)
+        case 2=>dbBridge.queryPrintFormatted(raceWinners_Q)
         case 3=> {
           val sR_Q=seasonRank_Q.split(";",2)
-          db.execute(sR_Q(0))
-          db.queryPrintFormatted(sR_Q(1))
+          dbBridge.execute(sR_Q(0))
+          dbBridge.queryPrintFormatted(sR_Q(1))
         }
         case 4=>{
-          db.queryPrintFormatted(top3EachRace_Q)
+          dbBridge.queryPrintFormatted(top3EachRace_Q)
         }
         case 5=>{
           val high=getInt("Enter the HIGH position limit:")
           val low=getInt("Enter the LOW position limit:")
-          db.queryPrintFormatted(percentagePositionedIndex_Q(high,low))
+          dbBridge.queryPrintFormatted(percentagePositionedIndex_Q(high,low))
         }
-        case 6=> db.queryPrintFormatted(finishedRaces_Q)
-        case 7=> db.queryPrintFormatted(allDriverRacePositions_Q)
+        case 6=> dbBridge.queryPrintFormatted(finishedRaces_Q)
+        case 7=> dbBridge.queryPrintFormatted(allDriverRacePositions_Q)
         case 8=> {
           val name=InputValid.getStringAlphaOnly("Enter all or part of the requested Driver's name:")
-          db.queryPrintFormatted(inputedDriverRacePosition_Q(name))
+          dbBridge.queryPrintFormatted(inputedDriverRacePosition_Q(name))
         }
         case 0=> continue=false
       }
@@ -47,13 +48,18 @@ object RaceSeasonTracker {
   def viewTables_menu(): Unit = {
     var continue:Boolean=true
     while (continue){
-      var choice_main=getInt(CONSTANTS.VIEWTABLES_CASE_STRING,0,5)
+      var choice_main=getInt(CONSTANTS.VIEWTABLES_CASE_STRING,0,55)
       choice_main match {
-        case 1=>db.queryPrintFormatted(rawTable("driver"))
-        case 2=>db.queryPrintFormatted(rawTable("result"))
-        case 3=>db.queryPrintFormatted(rawTable("schedule"))
-        case 4=>db.queryPrintFormatted(rawTable("track"))
-        case 5=>db.queryPrintFormatted(rawTable("points"))
+        case 1=>dbBridge.queryPrintFormatted(rawTable("driver"))
+        case 2=>dbBridge.queryPrintFormatted(rawTable("result"))
+        case 3=>dbBridge.queryPrintFormatted(rawTable("schedule"))
+        case 4=>dbBridge.queryPrintFormatted(rawTable("track"))
+        case 5=>dbBridge.queryPrintFormatted(rawTable("points"))
+        case 11=>dbBridge.queryToCsvFile(rawTable("driver"))
+        case 22=>dbBridge.queryToCsvFile(rawTable("result"))
+        case 33=>dbBridge.queryToCsvFile(rawTable("schedule"))
+        case 44=>dbBridge.queryToCsvFile(rawTable("track"))
+        case 55=>dbBridge.queryToCsvFile(rawTable("points"))
         case 0=> continue=false
       }
     }
@@ -65,19 +71,24 @@ object RaceSeasonTracker {
       println()
       var choice_main=getInt(CONSTANTS.UPDATETABLES_CASE_STRING,0,6)
       choice_main match {
-        case 1=>
-        case 2=>
-        case 3=>
-        case 4=>
-        case 5=>
-        case 6=>
+        case 1=> importResultFromCSV()
+        case 2=>dbBridge.execute(addRaceToSchedule_U())
+        case 3=>dbBridge.execute(addDriverToRoster_U())
+        case 4=>{dbBridge.queryPrintFormatted(rawTable("driver"))
+          dbBridge.execute(updateDriverName_U())
+          }
+        case 5=>{dbBridge.queryPrintFormatted(rawTable("driver"))
+          dbBridge.execute(updateDriverCarNumber_U())
+          }
+        case 6=>{dbBridge.queryPrintFormatted(rawTable("schedule"))
+        dbBridge.execute(QUERIES_SQL.removeLastRaceFromSchedule_U())}
         case 0=> continue=false
       }
     }
   }
 
   def main(args: Array[String]) {
-    db.connect()
+    dbBridge.connect()
     CONSTANTS.WELCOME_MESSAGE_PRINT()
     CONSTANTS.DB_CONNECTED_PRINT(dbName,dbHost)
     var continue:Boolean=true
@@ -91,7 +102,7 @@ object RaceSeasonTracker {
         case 0=> continue=false
       }
     }//main while loop
-    db.disconnect()
+    dbBridge.disconnect()
     CONSTANTS.DB_DISCONNECTED_PRINT(dbName,dbHost)
   }
 }

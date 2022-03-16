@@ -6,6 +6,8 @@ import scala.swing.FileChooser
 import scala.util.control.Breaks.{break, breakable}
 
 object getCSV_FilePath {
+  val HEADER_FORMAT_STRING="Race Number, Driver Name, Driver Car Number, Position, Finished[True or False]"
+
   def visualFileChooser(title:String):String ={
     var filepath:String=""
     val chooser = new FileChooser(new File("."))
@@ -26,9 +28,9 @@ object getCSV_FilePath {
       while (continue) {
         getFilepath = InputValid.getString("Enter the filepath of the Result.csv you would like to add to the Result table.\n" +
           "A blank entry will open a File Chooser Dialog Box.\n" +
-          "The first line of the CSV file must be column headers.\nf" +
-          ".csv columns must be formatted as:\n" +
-          "Race Number, Driver Name, Driver Car Number, Position, Finished[True or False],",true)
+          "The first line of the CSV file must be column headers.\n" +
+          "The .csv columns must be ordered as:\n" +
+          s"$HEADER_FORMAT_STRING\n[ENTER FILEPATH:]",true)
         if (getFilepath.endsWith(".csv")) {
           filepath = getFilepath
           continue = false
@@ -47,5 +49,4 @@ object getCSV_FilePath {
     }
     filepath
   }
-
 }

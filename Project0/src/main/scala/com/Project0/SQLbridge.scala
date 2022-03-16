@@ -1,27 +1,66 @@
 package com.Project0
 
 import java.sql.{Connection, DriverManager, ResultSet, SQLException, Statement}
-import scala.collection.mutable.ListBuffer
+import java.util.Date
+import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 import scala.collection.immutable.StringOps
 
-class SQLbridge(val driver:String, val url:String, val username:String, val password:String) {
-
+class SQLbridge(val driver:String, val url:String, val username:String, val password:String, val databaseName:String) {
 
   private var connection:Connection = null
   private var statement:Statement = null
   private var r:ResultSet =null
 
+  def printToFile(f: java.io.File)(op: java.io.PrintWriter => Unit) {
+    val p = new java.io.PrintWriter(f)
+    try { op(p) } finally { p.close() }  }
 
-  def queryToCsv(rs:ResultSet, filepath:String):Unit= {
 
+  def queryToCsvFile(s:String):Unit= {
+    import java.io._
+    val rs=query(s)
+    var rsMetaData= rs.getMetaData()
+    val columnCount=rsMetaData.getColumnCount
+    val a = new ArrayBuffer[String]()
+    for(i<- 1 until columnCount) {
+      a.append(rsMetaData.getColumnLabel(i))
+      if ((i)!=columnCount) a.append(", ")
+    }
+    a.append(rsMetaData.getColumnName(columnCount))
+    a.append("\n")
+    while ( rs.next() ) {
+      for(i<- 1 until columnCount) {
+        a.append(rs.getString(i))
+        if ((i)!=columnCount) a.append(", ")
+      }
+      a.append(rs.getString(columnCount))
+      a.append("\n")
+    }
+    val formatter = new java.text.SimpleDateFormat("MM.dd.YYYY_HH.mm.ss")
+    val dateString:String=formatter.format(new Date().getTime)
+    val filename:String=s"$databaseName-OUTPUT-$dateString.csv"
+    printToFile(new File(filename)) { p =>
+      a.foreach(p.print)
+    }
   }
 
-  def execute(str: String): Int = statement.executeUpdate(str)
+  def execute(str: String): Unit = {
+    try{
+      statement = connection.createStatement()
+      statement.executeUpdate(str)
+    } catch {
+      case e:SQLException=>{
+        e.printStackTrace()
+      }
+    }
+  }
 
   //noinspection DuplicatedCode
   def batchExecute(strings: Array[String]): Unit ={
-    for (s <- 1 until (strings.length - 1)) {
-      statement.executeUpdate(strings(s))
+    for (s <- strings.indices) {
+      statement = connection.createStatement()
+      val str=strings(s)
+      statement.executeUpdate(str)
     }
   }
 
@@ -31,6 +70,7 @@ class SQLbridge(val driver:String, val url:String, val username:String, val pass
     }
     query(strings(strings.length - 1))
   }
+
 
   def query(query:String): ResultSet= {
     try {
@@ -97,9 +137,7 @@ class SQLbridge(val driver:String, val url:String, val username:String, val pass
       }
       print("\n")
     }
-
-
-    System.out.flush();readLine();System.out.flush()
+    System.out.flush();readLine("[ENTER]");System.out.flush()
 }
 
   def connect(): Unit = {
