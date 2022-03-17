@@ -68,7 +68,7 @@ protected object QUERIES_SQL {
   def updateDriverName_U():String={
     val carNumber=getInt("Enter Driver's current car number:")
     val oldName=getString("Enter all or part of the Driver's current name:")
-    val newName=getInt("Enter Driver's new name:")
+    val newName=getString("Enter Driver's new name:")
     s"Update Driver d Set Name ='$newName' where d.Name like '%$oldName%' and d.CarNumber='$carNumber';"
   }
   def updateDriverCarNumber_U():String={
