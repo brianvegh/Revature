@@ -111,7 +111,7 @@ object InputValid {
               case e: NumberFormatException =>
                 System.out.println("Invalid Input. Please enter a valid Integer.")
                 invalid = true
-              break //todo: continue is not supported
+              break //
 
             }
             if (min != INT_MIN) {
