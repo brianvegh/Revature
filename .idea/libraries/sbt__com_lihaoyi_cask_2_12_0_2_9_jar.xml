@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="sbt: com.lihaoyi:cask_2.12:0.2.9:jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/com.lihaoyi/cask_2.12/jars/cask_2.12-0.2.9.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/com.lihaoyi/cask_2.12/srcs/cask_2.12-0.2.9-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

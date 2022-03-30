@@ -1,0 +1,26 @@
+#import user defined functions
+import org.apache.spark.sql.functions._
+import org.apache.spark.sql.functions.udf
+import spark.sqlContext.implicits._
+
+#import new data from hfds .csv file to dataframe
+val ad = spark.read.option("header",true).csv("/user/hive/warehouse/ALLDATA.csv").distinct()
+
+#price column mod, as df colPrice
+val priceMod: String => Int = _.replaceAll("[$,]","").toInt
+val priceModUDF=udf(priceMod)
+spark.udf.register("priceModUDF", priceMod)
+val colPrice=ad.withColumn("Price", priceModUDF('Price))
+
+
+#date column mod, as df Price
+val dateMod: String =>  = _.replaceAll("[$,]","").toInt
+
+
+
+
+Seq(("06-03-2009"),("07-24-2009")).toDF("Date").select(
+    col("Date"),
+    to_date(col("Date"),"MM-dd-yyyy").as("to_date")
+  ).show()
+}
