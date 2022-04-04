@@ -1,0 +1,10 @@
+Race Number, Driver Name, Driver Car Number, Position, Finished[True or False]
+7,Brian Vegh,256,4,TRUE
+7,Mark Vegh,23,5,TRUE
+7,Crazy Kenny Thomas,51,8,TRUE
+7,Dale Earnheart,3,1,TRUE
+7,Ricky Bobby,26,9,FALSE
+7,Jerry Seinfeld,9,7,TRUE
+7,The Bandit,0,2,TRUE
+7,Ken Block,43,6,TRUE
+7,Paul Newman,82,3,TRUE
